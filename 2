@@ -1,0 +1,196 @@
+mport cv2
+from google.colab.patches import cv2_imshow
+from google.colab import files
+
+def blur(image_path):
+    img = cv2.imread(image_path)
+    blurred = cv2.GaussianBlur(img, (5, 5), 0)
+    return blurred
+
+uploaded = files.upload()
+filename = list(uploaded.keys())[0]
+
+blurred_img = blur(filename)
+cv2_imshow(blurred_img)
+cv2.imwrite("blurred.jpg", blurred_img)
+
+
+mport cv2
+from google.colab.patches import cv2_imshow
+from google.colab import files
+
+def canny(image_path):
+    img = cv2.imread(image_path)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+    edges = cv2.Canny(blurred, 50, 150)
+    return edges
+
+uploaded = files.upload()
+filename = list(uploaded.keys())[0]
+
+canny_edges = canny(filename)
+cv2_imshow(canny_edges)
+cv2.imwrite("canny.jpg", canny_edges)
+
+
+
+import cv2
+import matplotlib.pyplot as plt
+from google.colab.patches import cv2_imshow  # Import cv2_imshow
+
+def histogram_equalization(image_path):
+    img = cv2.imread(image_path)
+    if img is None:
+        print(f"Error: Could not read image at {image_path}")
+        return None
+
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    equalized_gray = cv2.equalizeHist(gray)
+
+    # Display and compare histograms (optional)
+    plt.hist(gray.ravel(), 256, [0, 256])
+    plt.title('Original Histogram')
+    plt.show()
+
+    plt.hist(equalized_gray.ravel(), 256, [0, 256])
+    plt.title('Equalized Histogram')
+    plt.show()
+
+    return equalized_gray
+
+# Example usage (using a raw string for the path):
+image_path = "/content/Screenshot 2025-02-04 143015 (2).png"  # Or use forward slashes
+equalized_image = histogram_equalization(image_path)
+
+if equalized_image is not None:
+    cv2_imshow(equalized_image)  # Use cv2_imshow here
+    cv2.waitKey(0)  # waitKey still needed
+    cv2.destroyAllWindows() # destroyAllWindows still needed
+    cv2.imwrite("equalized_image.jpg", equalized_image)  # Save the image
+
+
+
+
+
+import cv2
+import matplotlib.pyplot as plt
+from google.colab import files
+
+def analyze_histogram(image_path):
+    img = cv2.imread(image_path)
+    color = ('b', 'g', 'r')
+    for i, col in enumerate(color):
+        histr = cv2.calcHist([img], [i], None, [256], [0, 256])
+        plt.plot(histr, color=col)
+        plt.xlim([0, 256])
+    plt.title('Color Histogram')
+    plt.xlabel('Pixel Intensity')
+    plt.ylabel('Pixel Count')
+    plt.show()
+    return "Histogram displayed"
+
+uploaded = files.upload()
+filename = list(uploaded.keys())[0]
+
+analyze_histogram(filename)
+
+
+
+
+
+
+
+import cv2
+from google.colab.patches import cv2_imshow
+from google.colab import files
+
+# Upload the image and get the filename
+uploaded = files.upload()  # Upload your image file when prompted
+filename = list(uploaded.keys())[0]  # Gets the first uploaded file
+
+# Read the image
+img = cv2.imread(filename)
+
+# Check if the image was loaded successfully
+if img is None:
+    print("Error: Image not loaded. Check the filename or try uploading the image again.")
+else:
+    # Apply erosion (using the default kernel, 1 iteration)
+    eroded = cv2.erode(img, None, iterations=1)
+
+    # Display and save the eroded image
+    cv2_imshow(eroded)
+    cv2.imwrite("eroded.jpg", eroded)
+
+
+
+
+
+
+
+
+import cv2
+from google.colab.patches import cv2_imshow
+
+# Load your image
+img = cv2.imread('/content/image0_0 (1).jpg')
+
+# Apply dilation
+dilated = cv2.dilate(img, None, iterations=1)
+
+# Display the dilated image
+cv2_imshow(dilated)
+cv2.waitKey(0)  # This line is not necessary in Colab
+
+
+
+
+
+import cv2
+from google.colab.patches import cv2_imshow
+from google.colab import files
+
+# Upload the image
+files.upload()  # Select your image file
+
+# Read the image
+img = cv2.imread("/content/image0_0 (1).jpg")
+
+# Scale up by 2 times
+bigger = cv2.resize(img, None, fx=2, fy=2, interpolation=cv2.INTER_LINEAR)
+
+# Scale down to 0.5 times
+smaller = cv2.resize(img, None, fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
+
+# Display and save the resized images
+cv2_imshow(bigger)
+cv2_imshow(smaller)
+cv2.imwrite("bigger.jpg", bigger)
+cv2.imwrite("smaller.jpg", smaller)
+
+
+
+
+import cv2
+from google.colab.patches import cv2_imshow
+from google.colab import files
+
+# Upload the image
+uploaded = files.upload()  # Select your image file
+
+# Get the filename of the uploaded image
+for filename in uploaded.keys():
+    # Read the image
+    img = cv2.imread(filename)
+
+    # Rotate the image 90° clockwise
+    rotated = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
+
+    # Display the rotated image
+    cv2_imshow(rotated)
+
+    # Save the rotated image
+    cv2.imwrite("rotated.jpg", rotated)
+
+    print(f"Rotated image saved as 'rotated.jpg'")
